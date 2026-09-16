@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Axiora Money Tracker
 
-## Getting Started
+A complete, offline-first money management web application built for Axiora's Development and Marketing agencies. The application runs entirely in your browser using local storage, ensuring your financial data remains private and secure on your own device.
 
-First, run the development server:
+## Features
+- **Offline-First & Local Storage**: Data is stored securely on your local device using IndexedDB (Dexie.js). No cloud database is required.
+- **Agency Separation**: Manage Development and Marketing finances completely separately.
+- **Client & Project Hierarchy**: Clients have projects, and projects have revenue and expenses.
+- **Automated Calculations**: Totals are automatically computed dynamically from transactions.
+- **Combined Overview**: See combined totals for all of Axiora.
+- **Automated Backups**: Intelligent backup reminder system to ensure your data is regularly exported and safely preserved.
+- **Export/Import**: Full system JSON backup export and restoration functionality.
+- **Responsive Design**: Works smoothly on desktop, tablet, and mobile.
 
+## Technology Stack
+- Next.js 15 (App Router) + React 19
+- TypeScript
+- Tailwind CSS v4
+- Dexie.js (IndexedDB wrapper)
+- Lucide React (Icons)
+
+---
+
+## Setup Instructions
+
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) installed on your machine.
+
+### 2. Installation
+Clone the repository and install the dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/urj2258/axiora-finance.git
+cd money_mangment
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Running the App Locally
+Start the Next.js development server:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser. The app will automatically initialize the local database with the default "Development" and "Marketing" agencies.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Building for Production
+To create an optimized production build:
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Data Management & Backups
+Because this application is **offline-first**, your data lives entirely in your browser.
+- **Do not clear your browser data** without taking a backup first.
+- Navigate to the **Settings** page within the dashboard to export your data as a JSON file.
+- You can restore your data on any device by importing that JSON file.
