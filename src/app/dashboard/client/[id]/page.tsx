@@ -4,7 +4,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/lib/db'
 import { formatCurrency, calculateSummary } from '@/utils/format'
 import Link from 'next/link'
-import { Plus, ArrowLeft } from 'lucide-react'
+import { Plus, ArrowLeft, TrendingUp, TrendingDown, Wallet, Pencil, PlusCircle } from 'lucide-react'
 import { notFound, useParams } from 'next/navigation'
 
 export default function ClientPage() {
@@ -80,63 +80,123 @@ export default function ClientPage() {
               const expenseTxs = projectTxs.filter(t => t.type === 'expense')
 
               return (
-                <div key={project.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                  <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50 relative">
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 pr-16">{project.name}</h3>
-                      <div className="flex gap-6 mt-2 text-sm">
-                        <span className="font-medium text-gray-600">Revenue: {formatCurrency(summary.revenue)}</span>
-                        <span className="font-medium text-red-600">Expenses: {formatCurrency(summary.expenses)}</span>
-                        <span className={`font-bold ${summary.remaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          Remaining: {formatCurrency(summary.remaining)}
-                        </span>
+                <div key={project.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                  <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center bg-gray-50/50 gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-3">
+                        <h3 className="text-xl font-extrabold text-gray-900 tracking-tight">{project.name}</h3>
+                        <Link 
+                          href={`/dashboard/client/${id}/edit-project/${project.id}`} 
+                          className="text-gray-400 hover:text-blue-600 transition-colors p-1.5 hover:bg-blue-50 rounded-md"
+                          title="Edit Project"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Link>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-4 text-sm">
+                        <div className="flex items-center gap-1.5 bg-green-50/50 px-3 py-1.5 rounded-lg border border-green-100">
+                          <TrendingUp className="w-4 h-4 text-green-500" />
+                          <span className="font-medium text-gray-500">Rev:</span>
+                          <span className="font-bold text-green-700">{formatCurrency(summary.revenue)}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 bg-red-50/50 px-3 py-1.5 rounded-lg border border-red-100">
+                          <TrendingDown className="w-4 h-4 text-red-400" />
+                          <span className="font-medium text-gray-500">Exp:</span>
+                          <span className="font-bold text-red-600">{formatCurrency(summary.expenses)}</span>
+                        </div>
+                        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border ${summary.remaining >= 0 ? 'bg-emerald-50/50 border-emerald-100' : 'bg-red-50 border-red-100'}`}>
+                          <Wallet className={`w-4 h-4 ${summary.remaining >= 0 ? 'text-emerald-500' : 'text-red-500'}`} />
+                          <span className="font-medium text-gray-500">Bal:</span>
+                          <span className={`font-extrabold ${summary.remaining >= 0 ? 'text-emerald-700' : 'text-red-700'}`}>
+                            {formatCurrency(summary.remaining)}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <div className="flex gap-2">
-                        <Link href={`/dashboard/client/${id}/edit-project/${project.id}`} className="text-xs text-gray-400 hover:text-gray-900 font-medium">Edit</Link>
-                      </div>
-                      <div className="flex gap-2">
-                        <Link href={`/dashboard/project/${project.id}/new-revenue`} className="px-3 py-1.5 bg-green-50 text-green-700 text-sm font-medium rounded hover:bg-green-100 transition-colors">
-                          + Revenue
-                        </Link>
-                        <Link href={`/dashboard/project/${project.id}/new-expense`} className="px-3 py-1.5 bg-red-50 text-red-700 text-sm font-medium rounded hover:bg-red-100 transition-colors">
-                          + Expense
-                        </Link>
-                      </div>
+                    
+                    <div className="flex gap-3 w-full md:w-auto">
+                      <Link 
+                        href={`/dashboard/project/${project.id}/new-revenue`} 
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors shadow-sm"
+                      >
+                        <PlusCircle className="w-4 h-4" /> Revenue
+                      </Link>
+                      <Link 
+                        href={`/dashboard/project/${project.id}/new-expense`} 
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors shadow-sm"
+                      >
+                        <PlusCircle className="w-4 h-4" /> Expense
+                      </Link>
                     </div>
                   </div>
                   
                   <div className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                      {/* Revenue Section */}
                       <div>
-                        <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 border-b pb-2">Revenue History</h4>
-                        <ul className="space-y-3">
+                        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+                          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Revenue History</h4>
+                          <span className="text-xs font-medium text-gray-400">{revenueTxs.length} items</span>
+                        </div>
+                        <ul className="space-y-2.5">
                           {revenueTxs.map(tx => (
-                            <li key={tx.id} className="flex justify-between items-center text-sm p-3 bg-gray-50 rounded">
-                              <div>
-                                <p className="font-medium text-gray-900">{tx.description || 'Revenue'} <Link href={`/dashboard/project/${project.id}/edit-transaction/${tx.id}`} className="text-xs text-gray-400 hover:text-gray-900 ml-2">Edit</Link></p>
-                                <p className="text-xs text-gray-500">{new Date(tx.transaction_date).toLocaleDateString()}</p>
+                            <li key={tx.id} className="group flex justify-between items-center text-sm p-3 hover:bg-gray-50 rounded-xl transition-colors border border-transparent hover:border-gray-100">
+                              <div className="flex flex-col">
+                                <span className="font-semibold text-gray-900">{tx.description || 'Revenue'}</span>
+                                <span className="text-xs text-gray-400 mt-0.5">{new Date(tx.transaction_date).toLocaleDateString()}</span>
                               </div>
-                              <span className="font-semibold text-green-600">{formatCurrency(tx.amount)}</span>
+                              <div className="flex items-center gap-4">
+                                <span className="font-bold text-green-600">{formatCurrency(tx.amount)}</span>
+                                <Link 
+                                  href={`/dashboard/project/${project.id}/edit-transaction/${tx.id}`} 
+                                  className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-blue-600 transition-all"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" />
+                                </Link>
+                              </div>
                             </li>
                           ))}
-                          {revenueTxs.length === 0 && <p className="text-sm text-gray-500 italic">No revenue recorded.</p>}
+                          {revenueTxs.length === 0 && (
+                            <div className="text-center py-6 px-4 bg-gray-50/50 rounded-xl border border-dashed border-gray-200">
+                              <p className="text-sm text-gray-400">No revenue recorded yet.</p>
+                            </div>
+                          )}
                         </ul>
                       </div>
+                      
+                      {/* Expenses Section */}
                       <div>
-                        <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 border-b pb-2">Expenses</h4>
-                        <ul className="space-y-3">
+                        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+                          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Expenses</h4>
+                          <span className="text-xs font-medium text-gray-400">{expenseTxs.length} items</span>
+                        </div>
+                        <ul className="space-y-2.5">
                           {expenseTxs.map(tx => (
-                            <li key={tx.id} className="flex justify-between items-center text-sm p-3 bg-gray-50 rounded">
-                              <div>
-                                <p className="font-medium text-gray-900">{tx.category || 'Expense'} <span className="font-normal text-gray-500 ml-1">{tx.description && `- ${tx.description}`}</span> <Link href={`/dashboard/project/${project.id}/edit-transaction/${tx.id}`} className="text-xs text-gray-400 hover:text-gray-900 ml-2">Edit</Link></p>
-                                <p className="text-xs text-gray-500">{new Date(tx.transaction_date).toLocaleDateString()}</p>
+                            <li key={tx.id} className="group flex justify-between items-center text-sm p-3 hover:bg-gray-50 rounded-xl transition-colors border border-transparent hover:border-gray-100">
+                              <div className="flex flex-col">
+                                <span className="font-semibold text-gray-900">
+                                  {tx.category || 'Expense'}
+                                  {tx.description && <span className="font-normal text-gray-500 ml-1.5">• {tx.description}</span>}
+                                </span>
+                                <span className="text-xs text-gray-400 mt-0.5">{new Date(tx.transaction_date).toLocaleDateString()}</span>
                               </div>
-                              <span className="font-semibold text-red-600">{formatCurrency(tx.amount)}</span>
+                              <div className="flex items-center gap-4">
+                                <span className="font-bold text-red-600">{formatCurrency(tx.amount)}</span>
+                                <Link 
+                                  href={`/dashboard/project/${project.id}/edit-transaction/${tx.id}`} 
+                                  className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-blue-600 transition-all"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" />
+                                </Link>
+                              </div>
                             </li>
                           ))}
-                          {expenseTxs.length === 0 && <p className="text-sm text-gray-500 italic">No expenses recorded.</p>}
+                          {expenseTxs.length === 0 && (
+                            <div className="text-center py-6 px-4 bg-gray-50/50 rounded-xl border border-dashed border-gray-200">
+                              <p className="text-sm text-gray-400">No expenses recorded yet.</p>
+                            </div>
+                          )}
                         </ul>
                       </div>
                     </div>

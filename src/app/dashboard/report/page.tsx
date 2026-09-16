@@ -2,15 +2,55 @@
 
 import { db } from '@/lib/db'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { Printer, ArrowLeft } from 'lucide-react'
+import { Printer, ArrowLeft, Download, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { formatCurrency, calculateSummary } from '@/utils/format'
+import { FinancialReportPDF } from '@/components/pdf/FinancialReportPDF'
+import { pdf } from '@react-pdf/renderer'
+import { useState } from 'react'
 
 export default function ReportPage() {
   const agencies = useLiveQuery(() => db.agencies.toArray())
   const clients = useLiveQuery(() => db.clients.toArray())
   const projects = useLiveQuery(() => db.projects.toArray())
   const transactions = useLiveQuery(() => db.transactions.toArray())
+  const [isGenerating, setIsGenerating] = useState(false)
+
+  const handleSavePDF = async () => {
+    if (!agencies || !clients || !projects || !transactions) return
+    setIsGenerating(true)
+    
+    try {
+      const blob = await pdf(
+        <FinancialReportPDF 
+          agencies={agencies} 
+          clients={clients} 
+          projects={projects} 
+          transactions={transactions} 
+        />
+      ).toBlob()
+      
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      
+      const today = new Date()
+      const dd = String(today.getDate()).padStart(2, '0')
+      const mm = String(today.getMonth() + 1).padStart(2, '0')
+      const yyyy = today.getFullYear()
+      a.download = `Axiora-Financial-Report-${dd}-${mm}-${yyyy}.pdf`
+      
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Failed to generate PDF:', error)
+      alert('Failed to generate PDF.')
+    } finally {
+      setIsGenerating(false)
+    }
+  }
 
   if (!agencies || !clients || !projects || !transactions) {
     return <div className="p-8">Loading Report Data...</div>
@@ -21,20 +61,26 @@ export default function ReportPage() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Non-printable header */}
-      <div className="print:hidden mb-8 flex justify-between items-center">
+      <div className="mb-8 flex justify-between items-center">
         <Link href="/dashboard" className="text-gray-500 hover:text-gray-900 flex items-center gap-2 text-sm font-medium">
           <ArrowLeft className="w-4 h-4" /> Back to Dashboard
         </Link>
         <button 
-          onClick={() => window.print()}
-          className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center gap-2"
+          onClick={handleSavePDF}
+          disabled={isGenerating}
+          className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          <Printer className="w-4 h-4" /> Print PDF Report
+          {isGenerating ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Download className="w-4 h-4" />
+          )}
+          {isGenerating ? 'Generating PDF...' : 'Save PDF'}
         </button>
       </div>
 
-      {/* Printable Report Content */}
-      <div className="bg-white p-12 rounded-xl shadow-sm border border-gray-100 print:shadow-none print:border-none print:p-0">
+      {/* Screen Preview Report Content */}
+      <div className="bg-white p-12 rounded-xl shadow-sm border border-gray-100 mb-12">
         
         {/* Report Header */}
         <div className="text-center mb-12 border-b pb-8">

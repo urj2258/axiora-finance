@@ -10,9 +10,11 @@ import { FinancialSummary } from '@/types'
 
 export default function DashboardPage() {
   const agencies = useLiveQuery(() => db.agencies.toArray())
+  const clients = useLiveQuery(() => db.clients.toArray())
+  const projects = useLiveQuery(() => db.projects.toArray())
   const allTransactions = useLiveQuery(() => db.transactions.toArray())
   
-  if (!agencies || !allTransactions) return <div className="p-8">Loading...</div>
+  if (!agencies || !clients || !projects || !allTransactions) return <div className="p-8">Loading...</div>
 
   const totalSummary = calculateSummary(allTransactions)
 
@@ -46,32 +48,40 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {agencies.map(agency => {
-          // Calculate agency summary by finding clients -> projects -> transactions
-          // We can do this efficiently inside the component since we have Dexie
-          return <AgencyCard key={agency.id} agency={agency} />
-        })}
+        {agencies.map(agency => (
+          <AgencyCard 
+            key={agency.id} 
+            agency={agency} 
+            clients={clients} 
+            projects={projects} 
+            transactions={allTransactions} 
+          />
+        ))}
       </div>
     </div>
   )
 }
 
-function AgencyCard({ agency }: { agency: any }) {
-  const clients = useLiveQuery(() => db.clients.where('agency_id').equals(agency.id).toArray())
-  const clientIds = clients?.map(c => c.id) || []
+function AgencyCard({ 
+  agency, 
+  clients, 
+  projects, 
+  transactions 
+}: { 
+  agency: any, 
+  clients: any[], 
+  projects: any[], 
+  transactions: any[] 
+}) {
+  const agencyClients = clients.filter(c => c.agency_id === agency.id)
+  const clientIds = agencyClients.map(c => c.id)
   
-  const projects = useLiveQuery(
-    () => db.projects.where('client_id').anyOf(clientIds).toArray(),
-    [clientIds]
-  )
-  const projectIds = projects?.map(p => p.id) || []
+  const agencyProjects = projects.filter(p => clientIds.includes(p.client_id))
+  const projectIds = agencyProjects.map(p => p.id)
   
-  const transactions = useLiveQuery(
-    () => db.transactions.where('project_id').anyOf(projectIds).toArray(),
-    [projectIds]
-  )
+  const agencyTxs = transactions.filter(t => projectIds.includes(t.project_id))
 
-  const summary = calculateSummary(transactions || [])
+  const summary = calculateSummary(agencyTxs)
 
   return (
     <SummaryCard
