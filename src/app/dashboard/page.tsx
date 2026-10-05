@@ -65,29 +65,29 @@ export default function Dashboard() {
   const loansOutstanding = totalLoansGiven - totalLoansReturned
 
   const StatCard = ({ title, value, subtitle, icon: Icon, colorClass }: any) => (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start gap-4">
-      <div className={`p-3 rounded-xl ${colorClass}`}>
-        <Icon size={24} />
+    <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start gap-4">
+      <div className={`p-3 rounded-xl flex-shrink-0 ${colorClass}`}>
+        <Icon size={24} className="w-5 h-5 md:w-6 md:h-6" />
       </div>
-      <div>
-        <p className="text-sm font-medium text-gray-500 mb-1">{title}</p>
-        <h3 className="text-2xl font-bold text-gray-900">Rs. {value.toLocaleString()}</h3>
-        {subtitle && <p className="text-sm text-gray-400 mt-1">{subtitle}</p>}
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-gray-500 mb-1 truncate">{title}</p>
+        <h3 className="text-xl md:text-2xl font-bold text-gray-900 break-words">Rs. {value.toLocaleString()}</h3>
+        {subtitle && <p className="text-xs md:text-sm text-gray-400 mt-1">{subtitle}</p>}
       </div>
     </div>
   )
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8">
+    <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500 mt-1">Your financial overview</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-sm md:text-base text-gray-500 mt-1">Your financial overview</p>
         </div>
       </div>
 
       {/* TOP CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         <StatCard 
           title="Current Money / Cash Available" 
           value={currentMoney} 
@@ -128,30 +128,30 @@ export default function Dashboard() {
       </div>
 
       {/* OVERVIEW SECTIONS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         
         {/* MONEY COMING IN */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex items-center gap-3">
-            <div className="p-2 bg-green-100 text-green-600 rounded-lg">
-              <ArrowUpRight size={20} />
+          <div className="p-4 md:p-6 border-b border-gray-100 flex items-center gap-3">
+            <div className="p-2 bg-green-100 text-green-600 rounded-lg flex-shrink-0">
+              <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5" />
             </div>
-            <h2 className="text-lg font-bold text-gray-900">Money Coming In</h2>
+            <h2 className="text-base md:text-lg font-bold text-gray-900">Money Coming In</h2>
           </div>
-          <div className="p-6 space-y-6">
+          <div className="p-4 md:p-6 space-y-6">
             <div>
-              <div className="flex justify-between items-end mb-2">
-                <span className="text-gray-600 font-medium">Development Remaining</span>
-                <span className="text-xl font-bold text-gray-900">Rs. {devRemainingToReceive.toLocaleString()}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-2 gap-1">
+                <span className="text-sm md:text-base text-gray-600 font-medium">Development Remaining</span>
+                <span className="text-lg md:text-xl font-bold text-gray-900">Rs. {devRemainingToReceive.toLocaleString()}</span>
               </div>
               <div className="w-full bg-gray-100 rounded-full h-2">
                 <div className="bg-green-500 h-2 rounded-full" style={{ width: `${Math.min(100, (totalDevReceived / totalProjectValue) * 100 || 0)}%` }}></div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between items-end mb-2">
-                <span className="text-gray-600 font-medium">Marketing Remaining (This Month)</span>
-                <span className="text-xl font-bold text-gray-900">Rs. {marketingRemainingThisMonth.toLocaleString()}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-2 gap-1">
+                <span className="text-sm md:text-base text-gray-600 font-medium">Marketing Remaining (This Month)</span>
+                <span className="text-lg md:text-xl font-bold text-gray-900">Rs. {marketingRemainingThisMonth.toLocaleString()}</span>
               </div>
               <div className="w-full bg-gray-100 rounded-full h-2">
                 <div className="bg-green-500 h-2 rounded-full" style={{ width: `${Math.min(100, (marketingThisMonth / expectedMarketingThisMonth) * 100 || 0)}%` }}></div>
@@ -162,24 +162,24 @@ export default function Dashboard() {
 
         {/* MONEY GOING OUT */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex items-center gap-3">
-            <div className="p-2 bg-red-100 text-red-600 rounded-lg">
-              <ArrowDownRight size={20} />
+          <div className="p-4 md:p-6 border-b border-gray-100 flex items-center gap-3">
+            <div className="p-2 bg-red-100 text-red-600 rounded-lg flex-shrink-0">
+              <ArrowDownRight className="w-4 h-4 md:w-5 md:h-5" />
             </div>
-            <h2 className="text-lg font-bold text-gray-900">Money Going Out</h2>
+            <h2 className="text-base md:text-lg font-bold text-gray-900">Money Going Out</h2>
           </div>
-          <div className="p-6 space-y-6">
-            <div className="flex justify-between items-center py-2 border-b border-gray-50">
-              <span className="text-gray-600 font-medium">Developer Payments Remaining</span>
-              <span className="text-xl font-bold text-orange-600">Rs. {devPaymentsRemaining.toLocaleString()}</span>
+          <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-gray-50 gap-1">
+              <span className="text-sm md:text-base text-gray-600 font-medium">Developer Payments Remaining</span>
+              <span className="text-lg md:text-xl font-bold text-orange-600">Rs. {devPaymentsRemaining.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b border-gray-50">
-              <span className="text-gray-600 font-medium">Personal Expenses (Total)</span>
-              <span className="text-xl font-bold text-gray-900">Rs. {totalPersonalSpent.toLocaleString()}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-gray-50 gap-1">
+              <span className="text-sm md:text-base text-gray-600 font-medium">Personal Expenses (Total)</span>
+              <span className="text-lg md:text-xl font-bold text-gray-900">Rs. {totalPersonalSpent.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between items-center py-2">
-              <span className="text-gray-600 font-medium">Loans Given (Outstanding)</span>
-              <span className="text-xl font-bold text-gray-900">Rs. {loansOutstanding.toLocaleString()}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 gap-1">
+              <span className="text-sm md:text-base text-gray-600 font-medium">Loans Given (Outstanding)</span>
+              <span className="text-lg md:text-xl font-bold text-gray-900">Rs. {loansOutstanding.toLocaleString()}</span>
             </div>
           </div>
         </div>

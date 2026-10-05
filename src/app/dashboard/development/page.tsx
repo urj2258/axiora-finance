@@ -50,53 +50,53 @@ export default function DevelopmentPage() {
   const totalExpectedProfit = totalProjectValue - totalDeveloperCost
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6 relative z-0">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-6 relative z-0">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Development</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900">Development</h1>
         <button 
           onClick={() => setIsNewProjectModalOpen(true)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 relative z-10"
+          className="flex items-center gap-1 md:gap-2 bg-blue-600 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg hover:bg-blue-700 relative z-10 text-sm md:text-base"
         >
-          <Plus size={20} />
+          <Plus size={20} className="w-4 h-4 md:w-5 md:h-5" />
           New Project
         </button>
       </div>
 
       {/* GRAND TOTAL SECTION */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <p className="text-sm text-gray-500 font-medium">Total Project Value</p>
-          <p className="text-2xl font-bold text-gray-900">Rs. {totalProjectValue.toLocaleString()}</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100">
+          <p className="text-xs md:text-sm text-gray-500 font-medium">Total Project Value</p>
+          <p className="text-lg md:text-2xl font-bold text-gray-900 truncate">Rs. {totalProjectValue.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <p className="text-sm text-gray-500 font-medium">Total Received</p>
-          <p className="text-2xl font-bold text-green-600">Rs. {totalReceived.toLocaleString()}</p>
+        <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100">
+          <p className="text-xs md:text-sm text-gray-500 font-medium">Total Received</p>
+          <p className="text-lg md:text-2xl font-bold text-green-600 truncate">Rs. {totalReceived.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <p className="text-sm text-gray-500 font-medium">Remaining to Receive</p>
-          <p className="text-2xl font-bold text-orange-600">Rs. {totalRemainingToReceive.toLocaleString()}</p>
+        <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100">
+          <p className="text-xs md:text-sm text-gray-500 font-medium">Remaining to Receive</p>
+          <p className="text-lg md:text-2xl font-bold text-orange-600 truncate">Rs. {totalRemainingToReceive.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <p className="text-sm text-gray-500 font-medium">Expected Profit</p>
-          <p className="text-2xl font-bold text-blue-600">Rs. {totalExpectedProfit.toLocaleString()}</p>
+        <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100">
+          <p className="text-xs md:text-sm text-gray-500 font-medium">Expected Profit</p>
+          <p className="text-lg md:text-2xl font-bold text-blue-600 truncate">Rs. {totalExpectedProfit.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 lg:col-start-1">
-          <p className="text-sm text-gray-500 font-medium">Total Developer Cost</p>
-          <p className="text-2xl font-bold text-gray-900">Rs. {totalDeveloperCost.toLocaleString()}</p>
+        <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100 md:col-start-1">
+          <p className="text-xs md:text-sm text-gray-500 font-medium">Total Developer Cost</p>
+          <p className="text-lg md:text-2xl font-bold text-gray-900 truncate">Rs. {totalDeveloperCost.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <p className="text-sm text-gray-500 font-medium">Developer Paid</p>
-          <p className="text-2xl font-bold text-blue-600">Rs. {developerPaymentsMade.toLocaleString()}</p>
+        <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100">
+          <p className="text-xs md:text-sm text-gray-500 font-medium">Developer Paid</p>
+          <p className="text-lg md:text-2xl font-bold text-blue-600 truncate">Rs. {developerPaymentsMade.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <p className="text-sm text-gray-500 font-medium">Developer Remaining</p>
-          <p className="text-2xl font-bold text-red-600">Rs. {remainingDeveloperPayments.toLocaleString()}</p>
+        <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100">
+          <p className="text-xs md:text-sm text-gray-500 font-medium">Developer Remaining</p>
+          <p className="text-lg md:text-2xl font-bold text-red-600 truncate">Rs. {remainingDeveloperPayments.toLocaleString()}</p>
         </div>
       </div>
 
       {/* PROJECTS LIST */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-gray-900">Projects</h2>
+        <h2 className="text-lg md:text-xl font-bold text-gray-900">Projects</h2>
         {projects.map(project => (
           <ProjectCard 
             key={project.id} 
@@ -231,22 +231,24 @@ function NewProjectModal({ agencyId, onClose }: { agencyId: string, onClose: () 
           <div className="pt-4 border-t">
             <h3 className="font-bold mb-2">Developers (Optional)</h3>
             {developers.map((dev, i) => (
-              <div key={i} className="flex gap-2 mb-2">
+              <div key={i} className="flex flex-col sm:flex-row gap-2 mb-2 border sm:border-0 p-2 sm:p-0 rounded bg-gray-50 sm:bg-transparent">
                 <input type="text" placeholder="Developer Name" value={dev.name} onChange={e => {
                   const newDevs = [...developers]
                   newDevs[i].name = e.target.value
                   setDevelopers(newDevs)
                 }} className="flex-1 border-gray-300 rounded-lg p-2 border text-sm" />
-                <input type="number" placeholder="Total Cost" value={dev.amount} onChange={e => {
-                  const newDevs = [...developers]
-                  newDevs[i].amount = e.target.value
-                  setDevelopers(newDevs)
-                }} className="flex-1 border-gray-300 rounded-lg p-2 border text-sm" />
-                {developers.length > 1 && (
-                  <button onClick={() => setDevelopers(developers.filter((_, idx) => idx !== i))} className="p-2 text-red-500 hover:bg-red-50 rounded">
-                    <Trash2 size={16} />
-                  </button>
-                )}
+                <div className="flex gap-2">
+                  <input type="number" placeholder="Total Cost" value={dev.amount} onChange={e => {
+                    const newDevs = [...developers]
+                    newDevs[i].amount = e.target.value
+                    setDevelopers(newDevs)
+                  }} className="flex-1 border-gray-300 rounded-lg p-2 border text-sm" />
+                  {developers.length > 1 && (
+                    <button onClick={() => setDevelopers(developers.filter((_, idx) => idx !== i))} className="p-2 text-red-500 hover:bg-red-50 rounded">
+                      <Trash2 size={16} />
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
             <button 
@@ -259,8 +261,8 @@ function NewProjectModal({ agencyId, onClose }: { agencyId: string, onClose: () 
         </div>
 
         <div className="mt-6 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
-          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save Project</button>
+          <button onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm md:text-base">Cancel</button>
+          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base">Save Project</button>
         </div>
       </div>
     </div>
@@ -285,13 +287,13 @@ function ProjectCard({ project, payments, devs, devPayments, agencyId }: any) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
       <div 
-        className="p-4 cursor-pointer hover:bg-gray-50 flex items-center justify-between group"
+        className="p-3 md:p-4 cursor-pointer hover:bg-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
         onClick={() => setExpanded(!expanded)}
       >
-        <div className="flex items-center gap-4">
-          {expanded ? <ChevronDown className="text-gray-400" /> : <ChevronRight className="text-gray-400" />}
-          <div className="flex items-center gap-2">
-            <h3 className="text-lg font-bold text-gray-900">{project.name}</h3>
+        <div className="flex items-center gap-3 md:gap-4">
+          {expanded ? <ChevronDown className="text-gray-400 flex-shrink-0" /> : <ChevronRight className="text-gray-400 flex-shrink-0" />}
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-base md:text-lg font-bold text-gray-900 break-words">{project.name}</h3>
             <button 
               onClick={(e) => { e.stopPropagation(); setShowEditModal(true) }}
               className="flex items-center gap-1 bg-gray-100 text-gray-600 hover:bg-gray-200 px-2 py-1 rounded text-xs font-medium transition-colors"
@@ -315,52 +317,52 @@ function ProjectCard({ project, payments, devs, devPayments, agencyId }: any) {
             </button>
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-sm text-gray-500">Value</p>
-          <p className="font-bold text-gray-900">Rs. {(project.contract_amount || 0).toLocaleString()}</p>
+        <div className="text-left sm:text-right ml-8 sm:ml-0">
+          <p className="text-xs md:text-sm text-gray-500">Value</p>
+          <p className="font-bold text-gray-900 text-base md:text-lg">Rs. {(project.contract_amount || 0).toLocaleString()}</p>
         </div>
       </div>
 
       {expanded && (
-        <div className="p-4 border-t border-gray-100 bg-gray-50 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="p-3 md:p-4 border-t border-gray-100 bg-gray-50 grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* OVERVIEW */}
           <div className="space-y-4">
-            <div className="flex justify-between items-center border-b pb-2">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b pb-2 gap-2">
               <h4 className="font-bold text-gray-900">Client Payments</h4>
               <button 
                 onClick={(e) => { e.stopPropagation(); setShowClientPaymentModal(true) }}
-                className="text-sm text-blue-600 font-medium hover:text-blue-800"
+                className="text-sm text-blue-600 font-medium hover:text-blue-800 text-left sm:text-right"
               >
                 + Add Client Payment
               </button>
             </div>
             
-            <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-              <div>
+            <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm mb-4">
+              <div className="bg-white p-2 rounded border border-gray-100">
                 <p className="text-gray-500">Value:</p>
-                <p className="font-semibold text-gray-900">Rs. {(project.contract_amount || 0).toLocaleString()}</p>
+                <p className="font-semibold text-gray-900 truncate">Rs. {(project.contract_amount || 0).toLocaleString()}</p>
               </div>
-              <div>
+              <div className="bg-white p-2 rounded border border-gray-100">
                 <p className="text-gray-500">Received:</p>
-                <p className="font-semibold text-green-600">Rs. {received.toLocaleString()}</p>
+                <p className="font-semibold text-green-600 truncate">Rs. {received.toLocaleString()}</p>
               </div>
-              <div>
+              <div className="bg-white p-2 rounded border border-gray-100">
                 <p className="text-gray-500">Remaining:</p>
-                <p className="font-semibold text-orange-600">Rs. {remaining.toLocaleString()}</p>
+                <p className="font-semibold text-orange-600 truncate">Rs. {remaining.toLocaleString()}</p>
               </div>
-              <div>
+              <div className="bg-white p-2 rounded border border-gray-100">
                 <p className="text-gray-500">Expected Profit:</p>
-                <p className="font-semibold text-blue-600">Rs. {profit.toLocaleString()}</p>
+                <p className="font-semibold text-blue-600 truncate">Rs. {profit.toLocaleString()}</p>
               </div>
             </div>
 
             {/* List recent client payments */}
             <div className="space-y-2 mt-4 max-h-40 overflow-y-auto pr-2">
               {payments.map((p: any) => (
-                <div key={p.id} className="bg-white p-2 rounded border border-gray-100 flex justify-between text-sm">
+                <div key={p.id} className="bg-white p-2 md:p-3 rounded border border-gray-100 flex flex-col sm:flex-row sm:justify-between text-xs md:text-sm gap-1">
                   <div>
-                    <span className="font-medium">Rs. {p.amount.toLocaleString()}</span>
-                    {p.notes && <span className="text-gray-500 ml-2 italic">{p.notes}</span>}
+                    <span className="font-medium text-gray-900">Rs. {p.amount.toLocaleString()}</span>
+                    {p.notes && <span className="text-gray-500 ml-2 italic block sm:inline">{p.notes}</span>}
                   </div>
                   <span className="text-gray-500">{new Date(p.payment_date).toLocaleDateString()}</span>
                 </div>
@@ -371,18 +373,18 @@ function ProjectCard({ project, payments, devs, devPayments, agencyId }: any) {
           {/* DEVELOPER COSTS */}
           <div className="space-y-4">
             <h4 className="font-bold text-gray-900 border-b pb-2">Developer Costs</h4>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
+            <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm">
+              <div className="bg-white p-2 rounded border border-gray-100 col-span-2 sm:col-span-1">
                 <p className="text-gray-500">Total Dev Cost:</p>
-                <p className="font-semibold text-gray-900">Rs. {devCost.toLocaleString()}</p>
+                <p className="font-semibold text-gray-900 truncate">Rs. {devCost.toLocaleString()}</p>
               </div>
-              <div>
+              <div className="bg-white p-2 rounded border border-gray-100">
                 <p className="text-gray-500">Dev Paid:</p>
-                <p className="font-semibold text-blue-600">Rs. {devPaid.toLocaleString()}</p>
+                <p className="font-semibold text-blue-600 truncate">Rs. {devPaid.toLocaleString()}</p>
               </div>
-              <div>
+              <div className="bg-white p-2 rounded border border-gray-100">
                 <p className="text-gray-500">Dev Remaining:</p>
-                <p className="font-semibold text-red-600">Rs. {devRemaining.toLocaleString()}</p>
+                <p className="font-semibold text-red-600 truncate">Rs. {devRemaining.toLocaleString()}</p>
               </div>
             </div>
             
@@ -393,26 +395,26 @@ function ProjectCard({ project, payments, devs, devPayments, agencyId }: any) {
                   const dpForDev = devPayments.filter((dp: any) => dp.developer_id === d.developer_id)
                   const paid = dpForDev.reduce((sum: number, curr: any) => sum + curr.amount, 0)
                   return (
-                    <div key={d.id} className="bg-white p-3 rounded border border-gray-100 text-sm">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">{d.developer_name || 'Developer'}</span>
-                        <div className="text-right flex items-center gap-3">
-                          <div>
-                            <span className="text-gray-900 block">Rs. {d.agreed_amount.toLocaleString()}</span>
-                            <span className="text-xs text-blue-600 block">Paid: Rs. {paid.toLocaleString()}</span>
+                    <div key={d.id} className="bg-white p-3 rounded border border-gray-100 text-xs md:text-sm">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                        <span className="font-medium text-gray-900">{d.developer_name || 'Developer'}</span>
+                        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-3">
+                          <div className="text-left sm:text-right">
+                            <span className="text-gray-900 block font-semibold">Rs. {d.agreed_amount.toLocaleString()}</span>
+                            <span className="text-blue-600 block">Paid: Rs. {paid.toLocaleString()}</span>
                           </div>
                           <button 
                             onClick={(e) => { e.stopPropagation(); setShowDevPaymentModal(d.developer_id) }}
-                            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs"
+                            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium flex-shrink-0"
                           >
                             + Pay
                           </button>
                         </div>
                       </div>
                       {dpForDev.length > 0 && (
-                        <div className="mt-2 pt-2 border-t border-gray-50 space-y-1">
+                        <div className="mt-3 pt-2 border-t border-gray-50 space-y-2">
                           {dpForDev.map((dp: any) => (
-                            <div key={dp.id} className="flex justify-between text-xs text-gray-500">
+                            <div key={dp.id} className="flex flex-col sm:flex-row sm:justify-between text-xs text-gray-500 gap-1">
                               <span>Rs. {dp.amount.toLocaleString()} {dp.payment_type ? `(${dp.payment_type})` : ''}</span>
                               <span>{new Date(dp.payment_date).toLocaleDateString()}</span>
                             </div>

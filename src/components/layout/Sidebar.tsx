@@ -4,10 +4,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
   LayoutDashboard, Settings, Code2, 
-  Smartphone, Wallet
+  Smartphone, Wallet, X
 } from 'lucide-react'
 
-export function Sidebar() {
+export function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname()
 
   const isActive = (path: string) => pathname === path
@@ -15,20 +15,28 @@ export function Sidebar() {
   const NavItem = ({ href, icon: Icon, label }: { href: string, icon: any, label: string }) => (
     <Link 
       href={href} 
+      onClick={onClose}
       className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
         isActive(href) || pathname.startsWith(href) && href !== '/dashboard' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100'
       }`}
     >
-      <Icon className={`w-5 h-5 ${isActive(href) || pathname.startsWith(href) && href !== '/dashboard' ? 'text-blue-600' : 'text-gray-500'}`} />
+      <Icon className={`w-5 h-5 flex-shrink-0 ${isActive(href) || pathname.startsWith(href) && href !== '/dashboard' ? 'text-blue-600' : 'text-gray-500'}`} />
       <span className="font-medium text-sm">{label}</span>
     </Link>
   )
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 flex flex-col h-full overflow-y-auto">
-      <div className="p-6 sticky top-0 bg-white z-10 border-b border-gray-100">
-        <h1 className="text-xl font-bold text-gray-900">Axiora</h1>
-        <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mt-1">Money Tracker</p>
+      <div className="p-6 sticky top-0 bg-white z-10 border-b border-gray-100 flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">Axiora</h1>
+          <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mt-1">Money Tracker</p>
+        </div>
+        {onClose && (
+          <button onClick={onClose} className="md:hidden p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg">
+            <X className="w-5 h-5" />
+          </button>
+        )}
       </div>
       
       <nav className="flex-1 px-4 py-4 space-y-2">

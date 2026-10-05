@@ -33,54 +33,54 @@ export default function PersonalExpensesPage() {
   const totalLoansOutstanding = totalLoansGiven - totalLoansReturned
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8 relative z-0">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-6 md:space-y-8 relative z-0">
       {/* HEADER */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Personal & Loans</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900">Personal & Loans</h1>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
         
         {/* PERSONAL EXPENSES SECTION */}
-        <div className="space-y-6">
-          <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+        <div className="space-y-4 md:space-y-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
             <div>
-              <p className="text-sm text-gray-500 font-medium">Total Personal Expenses</p>
-              <p className="text-2xl font-bold text-gray-900">Rs. {totalExpenses.toLocaleString()}</p>
+              <p className="text-xs md:text-sm text-gray-500 font-medium">Total Personal Expenses</p>
+              <p className="text-xl md:text-2xl font-bold text-gray-900 truncate">Rs. {totalExpenses.toLocaleString()}</p>
             </div>
             <button 
               onClick={() => setShowAddExpense(true)}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 relative z-10"
+              className="flex items-center justify-center gap-1 md:gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 relative z-10 text-sm md:text-base w-full sm:w-auto"
             >
-              <Plus size={20} />
+              <Plus size={20} className="w-4 h-4 md:w-5 md:h-5" />
               Add Expense
             </button>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
-              <h3 className="font-semibold text-gray-900">Recent Expenses</h3>
+              <h3 className="font-semibold text-gray-900 text-sm md:text-base">Recent Expenses</h3>
             </div>
             <div className="divide-y divide-gray-100 max-h-[60vh] overflow-y-auto">
               {expenses.map(expense => (
-                <div key={expense.id} className="p-4 flex justify-between items-center hover:bg-gray-50">
+                <div key={expense.id} className="p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 hover:bg-gray-50">
                   <div>
-                    <p className="font-medium text-gray-900">{expense.category}</p>
-                    <div className="flex gap-2 text-sm text-gray-500">
+                    <p className="font-medium text-gray-900 text-sm md:text-base">{expense.category}</p>
+                    <div className="flex flex-wrap gap-x-2 gap-y-1 text-xs md:text-sm text-gray-500">
                       <span>{new Date(expense.expense_date).toLocaleDateString()}</span>
                       {expense.description && (
                         <>
-                          <span>&bull;</span>
-                          <span>{expense.description}</span>
+                          <span className="hidden sm:inline">&bull;</span>
+                          <span className="w-full sm:w-auto">{expense.description}</span>
                         </>
                       )}
                     </div>
                   </div>
-                  <p className="font-bold text-gray-900">Rs. {expense.amount.toLocaleString()}</p>
+                  <p className="font-bold text-gray-900 text-base md:text-lg">Rs. {expense.amount.toLocaleString()}</p>
                 </div>
               ))}
               {expenses.length === 0 && (
-                <div className="p-8 text-center text-gray-500">
+                <div className="p-8 text-center text-gray-500 text-sm md:text-base">
                   No personal expenses recorded.
                 </div>
               )}
@@ -89,24 +89,24 @@ export default function PersonalExpensesPage() {
         </div>
 
         {/* LOANS SECTION */}
-        <div className="space-y-6">
-          <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+        <div className="space-y-4 md:space-y-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
             <div>
-              <p className="text-sm text-gray-500 font-medium">Loans Outstanding</p>
-              <p className="text-2xl font-bold text-orange-600">Rs. {totalLoansOutstanding.toLocaleString()}</p>
+              <p className="text-xs md:text-sm text-gray-500 font-medium">Loans Outstanding</p>
+              <p className="text-xl md:text-2xl font-bold text-orange-600 truncate">Rs. {totalLoansOutstanding.toLocaleString()}</p>
             </div>
             <button 
               onClick={() => setShowGiveLoan(true)}
-              className="flex items-center gap-2 bg-white text-gray-900 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 relative z-10"
+              className="flex items-center justify-center gap-1 md:gap-2 bg-white text-gray-900 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 relative z-10 text-sm md:text-base w-full sm:w-auto"
             >
-              <Plus size={20} />
+              <Plus size={20} className="w-4 h-4 md:w-5 md:h-5" />
               Give Loan
             </button>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
-              <h3 className="font-semibold text-gray-900">Money Given (Loans)</h3>
+              <h3 className="font-semibold text-gray-900 text-sm md:text-base">Money Given (Loans)</h3>
             </div>
             <div className="divide-y divide-gray-100 max-h-[60vh] overflow-y-auto">
               {loans.map(loan => {
@@ -117,22 +117,22 @@ export default function PersonalExpensesPage() {
 
                 return (
                   <div key={loan.id} className="p-4 space-y-2 hover:bg-gray-50">
-                    <div className="flex justify-between items-start">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                       <div>
-                        <p className="font-bold text-gray-900">{loan.person_name}</p>
-                        <p className="text-sm text-gray-500">{new Date(loan.date_given).toLocaleDateString()}</p>
+                        <p className="font-bold text-gray-900 text-sm md:text-base">{loan.person_name}</p>
+                        <p className="text-xs md:text-sm text-gray-500">{new Date(loan.date_given).toLocaleDateString()}</p>
                       </div>
-                      <div className="text-right">
-                        <p className="font-bold text-gray-900">Given: Rs. {loan.amount_given.toLocaleString()}</p>
-                        <p className="text-sm text-orange-600 font-medium">Remaining: Rs. {remaining.toLocaleString()}</p>
+                      <div className="text-left sm:text-right">
+                        <p className="font-bold text-gray-900 text-sm md:text-base truncate">Given: Rs. {loan.amount_given.toLocaleString()}</p>
+                        <p className="text-xs md:text-sm text-orange-600 font-medium truncate">Remaining: Rs. {remaining.toLocaleString()}</p>
                       </div>
                     </div>
-                    {loan.notes && <p className="text-sm text-gray-600 italic">{loan.notes}</p>}
-                    <div className="pt-2 flex justify-between items-center">
-                       <span className="text-xs text-gray-400">Returned so far: Rs. {returned.toLocaleString()}</span>
+                    {loan.notes && <p className="text-xs md:text-sm text-gray-600 italic break-words">{loan.notes}</p>}
+                    <div className="pt-3 border-t border-gray-50 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                       <span className="text-xs md:text-sm text-gray-500">Returned so far: Rs. {returned.toLocaleString()}</span>
                        <button 
                          onClick={() => setShowLoanRepayment({ id: loan.id, name: loan.person_name, remaining })}
-                         className="text-sm text-blue-600 font-medium hover:text-blue-700 relative z-10"
+                         className="text-sm text-blue-600 font-medium hover:text-blue-700 relative z-10 bg-blue-50 sm:bg-transparent px-3 py-1.5 sm:p-0 rounded-lg sm:rounded-none w-full sm:w-auto text-center"
                        >
                          + Record Return
                        </button>
@@ -198,32 +198,32 @@ function AddExpenseModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm">
+      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Add Personal Expense</h2>
-        {error && <div className="mb-4 text-red-600 bg-red-50 p-2 text-sm rounded">{error}</div>}
+        {error && <div className="mb-4 text-red-600 bg-red-50 p-2 text-sm rounded-lg">{error}</div>}
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Category</label>
-            <select value={category} onChange={e => setCategory(e.target.value)} className="w-full border p-2 rounded bg-white">
+            <select value={category} onChange={e => setCategory(e.target.value)} className="w-full border p-2 rounded-lg bg-white">
               {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Amount</label>
-            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Date</label>
-            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Note (Optional)</label>
-            <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
         </div>
         <div className="mt-6 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 border rounded">Cancel</button>
-          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+          <button onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm md:text-base">Cancel</button>
+          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base">Save</button>
         </div>
       </div>
     </div>
@@ -267,30 +267,30 @@ function GiveLoanModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm">
+      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Give Loan</h2>
-        {error && <div className="mb-4 text-red-600 bg-red-50 p-2 text-sm rounded">{error}</div>}
+        {error && <div className="mb-4 text-red-600 bg-red-50 p-2 text-sm rounded-lg">{error}</div>}
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Person Name *</label>
-            <input type="text" value={personName} onChange={e => setPersonName(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="text" value={personName} onChange={e => setPersonName(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Amount *</label>
-            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Date</label>
-            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Note (Optional)</label>
-            <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
         </div>
         <div className="mt-6 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 border rounded">Cancel</button>
-          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+          <button onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm md:text-base">Cancel</button>
+          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base">Save</button>
         </div>
       </div>
     </div>
@@ -338,26 +338,26 @@ function LoanRepaymentModal({ loanId, personName, remaining, onClose }: { loanId
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm">
+      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Record Return from {personName}</h2>
-        {error && <div className="mb-4 text-red-600 bg-red-50 p-2 text-sm rounded">{error}</div>}
+        {error && <div className="mb-4 text-red-600 bg-red-50 p-2 text-sm rounded-lg">{error}</div>}
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Amount (Remaining: Rs. {remaining.toLocaleString()})</label>
-            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Date</label>
-            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Note (Optional)</label>
-            <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full border p-2 rounded" />
+            <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full border p-2 rounded-lg" />
           </div>
         </div>
         <div className="mt-6 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 border rounded">Cancel</button>
-          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+          <button onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm md:text-base">Cancel</button>
+          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base">Save</button>
         </div>
       </div>
     </div>
