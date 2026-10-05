@@ -13,17 +13,23 @@ export default function SettingsPage() {
       const agencies = await db.agencies.toArray()
       const clients = await db.clients.toArray()
       const projects = await db.projects.toArray()
-      const transactions = await db.transactions.toArray()
+      const marketing_payments = await db.marketing_payments.toArray()
+      const project_payments = await db.project_payments.toArray()
+      const developers = await db.developers.toArray()
+      const project_developers = await db.project_developers.toArray()
+      const developer_payments = await db.developer_payments.toArray()
+      const personal_expenses = await db.personal_expenses.toArray()
+      const loans = await db.loans.toArray()
+      const loan_payments = await db.loan_payments.toArray()
+      const users = await db.users.toArray()
       const settings = await db.settings.toArray()
 
       const data = {
-        version: 1,
+        version: 2,
         timestamp: new Date().toISOString(),
-        agencies,
-        clients,
-        projects,
-        transactions,
-        settings
+        agencies, clients, projects, marketing_payments, project_payments,
+        developers, project_developers, developer_payments, personal_expenses,
+        loans, loan_payments, users, settings
       }
 
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
@@ -62,25 +68,46 @@ export default function SettingsPage() {
         setImportStatus('Importing data...')
         const data = JSON.parse(event.target?.result as string)
         
-        if (!data.agencies || !data.clients || !data.projects || !data.transactions) {
+        if (!data.agencies || !data.clients || !data.projects) {
           throw new Error('Invalid backup file format.')
         }
 
         const settingsData = data.settings || []
 
-        await db.transaction('rw', db.agencies, db.clients, db.projects, db.transactions, db.settings, async () => {
+        await db.transaction('rw', 
+          [db.agencies, db.clients, db.projects, db.marketing_payments, 
+          db.project_payments, db.developers, db.project_developers, 
+          db.developer_payments, db.personal_expenses, db.loans, 
+          db.loan_payments, db.users, db.settings], 
+          async () => {
           // Clear existing
           await db.agencies.clear()
           await db.clients.clear()
           await db.projects.clear()
-          await db.transactions.clear()
+          await db.marketing_payments.clear()
+          await db.project_payments.clear()
+          await db.developers.clear()
+          await db.project_developers.clear()
+          await db.developer_payments.clear()
+          await db.personal_expenses.clear()
+          await db.loans.clear()
+          await db.loan_payments.clear()
+          await db.users.clear()
           await db.settings.clear()
 
           // Import new
           await db.agencies.bulkAdd(data.agencies)
           await db.clients.bulkAdd(data.clients)
           await db.projects.bulkAdd(data.projects)
-          await db.transactions.bulkAdd(data.transactions)
+          if(data.marketing_payments) await db.marketing_payments.bulkAdd(data.marketing_payments)
+          if(data.project_payments) await db.project_payments.bulkAdd(data.project_payments)
+          if(data.developers) await db.developers.bulkAdd(data.developers)
+          if(data.project_developers) await db.project_developers.bulkAdd(data.project_developers)
+          if(data.developer_payments) await db.developer_payments.bulkAdd(data.developer_payments)
+          if(data.personal_expenses) await db.personal_expenses.bulkAdd(data.personal_expenses)
+          if(data.loans) await db.loans.bulkAdd(data.loans)
+          if(data.loan_payments) await db.loan_payments.bulkAdd(data.loan_payments)
+          if(data.users) await db.users.bulkAdd(data.users)
           if (settingsData.length > 0) {
             await db.settings.bulkAdd(settingsData)
           }

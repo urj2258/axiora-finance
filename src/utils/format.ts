@@ -1,5 +1,5 @@
 import { 
-  FinancialSummary, Transaction, Project, ProjectPayment, 
+  Project, ProjectPayment, 
   ProjectDeveloper, DeveloperPayment, PersonalExpense, Loan, LoanPayment 
 } from '@/types'
 
@@ -12,7 +12,7 @@ export function formatCurrency(amount: number): string {
   }).format(amount).replace('PKR', 'Rs.')
 }
 
-export function calculateSummary(transactions: Transaction[]): FinancialSummary {
+export function calculateSummary(transactions: any[]): any {
   const revenue = transactions.filter(t => t.type === 'revenue').reduce((sum, t) => sum + Number(t.amount), 0)
   const expenses = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + Number(t.amount), 0)
   return {
@@ -37,7 +37,7 @@ export function calculateProjectFinancials(
   payments: ProjectPayment[],
   projectDevs: ProjectDeveloper[],
   devPayments: DeveloperPayment[], // To track paid vs agreed? We only need agreed for project cost, or maybe paid? The prompt said "Developer Cost". Usually that means agreed amount.
-  expenses: Transaction[]
+  expenses: any[]
 ): ProjectFinancials {
   const contractAmount = project.contract_amount || 0
   const received = payments.reduce((sum, p) => sum + Number(p.amount), 0)
