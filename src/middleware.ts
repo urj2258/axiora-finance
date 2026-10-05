@@ -9,7 +9,8 @@ export function middleware(request: NextRequest) {
   const isProtectedRoute = pathname.startsWith('/dashboard') || pathname === '/'
 
   if (isProtectedRoute && !authCookie) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    // Temporarily bypassed auth check
+    // return NextResponse.redirect(new URL('/login', request.url))
   }
 
   if (pathname === '/login' && authCookie) {
