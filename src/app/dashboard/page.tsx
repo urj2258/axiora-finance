@@ -64,6 +64,9 @@ export default function Dashboard() {
   // 4. Loans Outstanding
   const loansOutstanding = totalLoansGiven - totalLoansReturned
 
+  // 5. Net Profit
+  const netProfitAfterExpenses = totalDevProfit - totalPersonalSpent
+
   const StatCard = ({ title, value, subtitle, icon: Icon, colorClass }: any) => (
     <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start gap-4">
       <div className={`p-3 rounded-xl flex-shrink-0 ${colorClass}`}>
@@ -95,7 +98,7 @@ export default function Dashboard() {
           colorClass="bg-blue-100 text-blue-600" 
         />
         <StatCard 
-          title="Total Development Profit" 
+          title="Total Development Expected Profit" 
           value={totalDevProfit} 
           icon={TrendingUp} 
           colorClass="bg-green-100 text-green-600" 
@@ -125,6 +128,32 @@ export default function Dashboard() {
           icon={Users} 
           colorClass="bg-yellow-100 text-yellow-600" 
         />
+      </div>
+
+      {/* NET PROFIT BREAKDOWN CARD */}
+      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100">
+        <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">Net Profit After Personal Expenses</h2>
+        
+        <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+          <div className="space-y-3 flex-grow w-full md:w-auto">
+            <div className="flex justify-between items-center text-sm md:text-base">
+              <span className="text-gray-600">Development Expected Profit</span>
+              <span className="font-semibold text-gray-900">Rs. {totalDevProfit.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm md:text-base border-b border-gray-100 pb-3">
+              <span className="text-gray-600">Less: Personal Expenses</span>
+              <span className="font-semibold text-red-600">- Rs. {totalPersonalSpent.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center text-base md:text-lg pt-1">
+              <span className="font-bold text-gray-900">Net Profit</span>
+              <span className="font-bold text-green-600">Rs. {netProfitAfterExpenses.toLocaleString()}</span>
+            </div>
+          </div>
+          
+          <div className="bg-blue-50 p-4 rounded-xl text-sm text-blue-800 w-full md:max-w-xs xl:max-w-sm">
+            <p><strong>Note:</strong> Personal expenses reduce your net profit, while loans are tracked separately because they are expected to be returned.</p>
+          </div>
+        </div>
       </div>
 
       {/* OVERVIEW SECTIONS */}
