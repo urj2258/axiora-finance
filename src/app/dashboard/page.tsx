@@ -91,6 +91,25 @@ export default function Dashboard() {
 
       {/* TOP CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        
+        {/* PROMINENT NET PROFIT CARD */}
+        <div className="col-span-1 sm:col-span-2 lg:col-span-3 bg-gradient-to-br from-green-50 to-green-100 p-4 md:p-6 rounded-2xl shadow-sm border border-green-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex-grow">
+            <p className="text-sm font-semibold text-green-800 uppercase tracking-wider mb-2">Net Profit After Personal Expenses</p>
+            <h3 className="text-3xl md:text-5xl font-bold text-green-900 mb-4">Rs. {netProfitAfterExpenses.toLocaleString()}</h3>
+            
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-green-800">
+              <span className="flex justify-between sm:block"><span className="opacity-80">Development Profit:</span> <strong>Rs. {totalDevProfit.toLocaleString()}</strong></span>
+              <span className="hidden sm:inline opacity-30">|</span>
+              <span className="flex justify-between sm:block"><span className="opacity-80">Less Personal Expenses:</span> <strong>Rs. {totalPersonalSpent.toLocaleString()}</strong></span>
+            </div>
+          </div>
+          
+          <div className="bg-white/60 p-4 rounded-xl text-xs md:text-sm text-green-900 w-full md:max-w-xs border border-green-200/50 shadow-sm leading-relaxed">
+            <strong>Note:</strong> Personal expenses reduce your net profit, while loans (Rs. {loansOutstanding.toLocaleString()}) are tracked separately because they are expected to be returned.
+          </div>
+        </div>
+
         <StatCard 
           title="Current Money / Cash Available" 
           value={currentMoney} 
@@ -128,32 +147,6 @@ export default function Dashboard() {
           icon={Users} 
           colorClass="bg-yellow-100 text-yellow-600" 
         />
-      </div>
-
-      {/* NET PROFIT BREAKDOWN CARD */}
-      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100">
-        <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">Net Profit After Personal Expenses</h2>
-        
-        <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
-          <div className="space-y-3 flex-grow w-full md:w-auto">
-            <div className="flex justify-between items-center text-sm md:text-base">
-              <span className="text-gray-600">Development Expected Profit</span>
-              <span className="font-semibold text-gray-900">Rs. {totalDevProfit.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between items-center text-sm md:text-base border-b border-gray-100 pb-3">
-              <span className="text-gray-600">Less: Personal Expenses</span>
-              <span className="font-semibold text-red-600">- Rs. {totalPersonalSpent.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between items-center text-base md:text-lg pt-1">
-              <span className="font-bold text-gray-900">Net Profit</span>
-              <span className="font-bold text-green-600">Rs. {netProfitAfterExpenses.toLocaleString()}</span>
-            </div>
-          </div>
-          
-          <div className="bg-blue-50 p-4 rounded-xl text-sm text-blue-800 w-full md:max-w-xs xl:max-w-sm">
-            <p><strong>Note:</strong> Personal expenses reduce your net profit, while loans are tracked separately because they are expected to be returned.</p>
-          </div>
-        </div>
       </div>
 
       {/* OVERVIEW SECTIONS */}
