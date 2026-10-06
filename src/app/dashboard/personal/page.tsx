@@ -12,6 +12,7 @@ export default function PersonalExpensesPage() {
   const loanPayments = useLiveQuery(() => db.loan_payments.toArray())
 
   const [showAddExpense, setShowAddExpense] = useState(false)
+  const [showEditExpense, setShowEditExpense] = useState<any>(null)
   const [showGiveLoan, setShowGiveLoan] = useState(false)
   const [showLoanRepayment, setShowLoanRepayment] = useState<{ id: string, name: string, remaining: number } | null>(null)
 
@@ -63,9 +64,18 @@ export default function PersonalExpensesPage() {
             </div>
             <div className="divide-y divide-gray-100 max-h-[60vh] overflow-y-auto">
               {expenses.map(expense => (
-                <div key={expense.id} className="p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 hover:bg-gray-50">
-                  <div>
-                    <p className="font-medium text-gray-900 text-sm md:text-base">{expense.category}</p>
+                <div 
+                  key={expense.id} 
+                  className="p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 hover:bg-gray-50 cursor-pointer group"
+                  onClick={() => setShowEditExpense(expense)}
+                >
+                  <div className="flex-grow">
+                    <p className="font-medium text-gray-900 text-sm md:text-base flex items-center gap-2">
+                      {expense.category}
+                      <span className="text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                      </span>
+                    </p>
                     <div className="flex flex-wrap gap-x-2 gap-y-1 text-xs md:text-sm text-gray-500">
                       <span>{new Date(expense.expense_date).toLocaleDateString()}</span>
                       {expense.description && (
@@ -76,7 +86,10 @@ export default function PersonalExpensesPage() {
                       )}
                     </div>
                   </div>
-                  <p className="font-bold text-gray-900 text-base md:text-lg">Rs. {expense.amount.toLocaleString()}</p>
+                  <div className="flex items-center justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                    <p className="font-bold text-gray-900 text-base md:text-lg">Rs. {expense.amount.toLocaleString()}</p>
+                    <span className="text-blue-600 text-xs font-medium sm:hidden bg-blue-50 px-2 py-1 rounded">Edit</span>
+                  </div>
                 </div>
               ))}
               {expenses.length === 0 && (
@@ -151,6 +164,7 @@ export default function PersonalExpensesPage() {
       </div>
 
       {showAddExpense && <AddExpenseModal onClose={() => setShowAddExpense(false)} />}
+      {showEditExpense && <EditExpenseModal expense={showEditExpense} onClose={() => setShowEditExpense(null)} />}
       {showGiveLoan && <GiveLoanModal onClose={() => setShowGiveLoan(false)} />}
       {showLoanRepayment && (
         <LoanRepaymentModal 
@@ -358,6 +372,86 @@ function LoanRepaymentModal({ loanId, personName, remaining, onClose }: { loanId
         <div className="mt-6 flex justify-end gap-2">
           <button onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm md:text-base">Cancel</button>
           <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base">Save</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function EditExpenseModal({ expense, onClose }: { expense: any, onClose: () => void }) {
+  const [category, setCategory] = useState(expense.category || 'Food')
+  const [amount, setAmount] = useState(expense.amount?.toString() || '')
+  const [date, setDate] = useState(expense.expense_date || '')
+  const [note, setNote] = useState(expense.description || '')
+  const [error, setError] = useState('')
+
+  const handleSave = async () => {
+    const eAmount = Number(amount)
+    if (!eAmount || eAmount <= 0) {
+      setError('Amount must be greater than 0')
+      return
+    }
+
+    try {
+      await db.personal_expenses.update(expense.id, {
+        amount: eAmount,
+        category,
+        description: note,
+        expense_date: date,
+        updated_at: new Date().toISOString()
+      })
+      onClose()
+    } catch (err) {
+      setError('Failed to update expense')
+    }
+  }
+
+  const handleDelete = async () => {
+    if (confirm('Are you sure you want to delete this expense?')) {
+      try {
+        await db.personal_expenses.delete(expense.id)
+        onClose()
+      } catch (err) {
+        setError('Failed to delete expense')
+      }
+    }
+  }
+
+  const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Family', 'Education', 'Entertainment', 'Other']
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm max-h-[90vh] overflow-y-auto">
+        <h2 className="text-xl font-bold mb-4">Edit Personal Expense</h2>
+        {error && <div className="mb-4 text-red-600 bg-red-50 p-2 text-sm rounded-lg">{error}</div>}
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Category</label>
+            <select value={category} onChange={e => setCategory(e.target.value)} className="w-full border p-2 rounded-lg bg-white">
+              {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Amount</label>
+            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} className="w-full border p-2 rounded-lg" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Date</label>
+            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border p-2 rounded-lg" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Note (Optional)</label>
+            <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full border p-2 rounded-lg" />
+          </div>
+        </div>
+        <div className="mt-6 flex justify-between items-center">
+          <button onClick={handleDelete} className="text-red-500 hover:bg-red-50 p-2 rounded transition-colors" title="Delete Expense">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+          </button>
+          <div className="flex gap-2">
+            <button onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm md:text-base">Cancel</button>
+            <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base">Save</button>
+          </div>
         </div>
       </div>
     </div>
